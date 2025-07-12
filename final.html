@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap Pro | Win Your Hackathon</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        },
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'wave': 'wave 2s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        wave: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '10%': { transform: 'rotate(14deg)' },
+                            '20%': { transform: 'rotate(-8deg)' },
+                            '30%': { transform: 'rotate(14deg)' },
+                            '40%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(10deg)' },
+                            '60%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(0deg)' },
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(123, 92, 246, 0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #8b5cf6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .skill-tag {
+            transition: all 0.2s;
+        }
+        .skill-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #8b5cf6;
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .dark .modal-content {
+            background-color: #1f2937;
+        }
+        
+        /* Skill card hover effect */
+        .skill-card {
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg);
+        }
+        .skill-card:hover {
+            transform: perspective(1000px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Pulse animation for CTA */
+        .pulse-cta {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Wave animation */
+        .wave-animation {
+            display: inline-block;
+            animation: wave 2s linear infinite;
+            transform-origin: 70% 70%;
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Dark mode toggle styles */
+        .dark .dark\:bg-gray-900 {
+            background-color: #111827;
+        }
+        .dark .dark\:bg-gray-800 {
+            background-color: #1f2937;
+        }
+        .dark .dark\:text-gray-300 {
+            color: #d1d5db;
+        }
+        .dark .dark\:border-gray-700 {
+            border-color: #374151;
+        }
+        .dark .dark\:bg-purple-900 {
+            background-color: #4c1d95;
+        }
+        .dark .dark\:text-purple-300 {
+            color: #c4b5fd;
+        }
+        .dark .dark\:bg-blue-900 {
+            background-color: #1e40af;
+        }
+        .dark .dark\:text-blue-100 {
+            color: #dbeafe;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #7c3aed;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 dark:bg-gray-800 animate_animated animate_fadeInDown">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold text-primary-500 flex items-center dark:text-purple-300">
+                        <i class="fas fa-exchange-alt mr-2 wave-animation"></i>
+                        SkillSwap Pro
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link px-4 py-2 text-gray-700 hover:text-primary-500 dark:text-gray-300">Home</a>
+                    <a href="#browse" class="nav-link px-4 py-2 text-gray-700 hover:text-primary-500 dark:text-gray-300">Browse</a>
+                    <a href="#profile" class="nav-link px-4 py-2 text-gray-700 hover:text-primary-500 dark:text-gray-300">Profile</a>
+                    <a href="#admin" class="nav-link px-4 py-2 text-gray-700 hover:text-primary-500 dark:text-gray-300">Admin</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-purple-300">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                    <button id="loginBtn" class="px-4 py-2 text-primary-500 hover:bg-primary-50 rounded-md transition dark:hover:bg-purple-900/20">Login</button>
+                    <button id="registerBtn" class="px-4 py-2 btn-gradient text-white rounded-md shadow hover:shadow-lg transition-all">Register</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content dark:bg-gray-800">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold dark:text-white">Welcome Back!</h3>
+                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white text-2xl">
+                    &times;
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="your@email.com" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="w-full px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">Login</button>
+                <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                    Don't have an account? <button type="button" id="switchToRegister" class="text-primary-600 hover:underline dark:text-primary-400">Sign up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content dark:bg-gray-800">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold dark:text-white">Join SkillSwap Pro</h3>
+                <button id="closeRegisterModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white text-2xl">
+                    &times;
+                </button>
+            </div>
+            <form id="registerForm" class="space-y-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="registerName">Full Name</label>
+                    <input type="text" id="registerName" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="John Doe" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="your@email.com" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="w-full px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">Create Account</button>
+                <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                    Already have an account? <button type="button" id="switchToLogin" class="text-primary-600 hover:underline dark:text-primary-400">Log in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Swap Request Modal -->
+    <div id="swapModal" class="modal">
+        <div class="modal-content dark:bg-gray-800 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold dark:text-white" id="swapModalTitle">Request Skill Swap</h3>
+                <button id="closeSwapModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white text-2xl">
+                    &times;
+                </button>
+            </div>
+            <form id="swapForm" class="space-y-4">
+                <div class="flex items-center space-x-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <img id="swapUserAvatar" src="https://randomuser.me/api/portraits/women/44.jpg" class="w-12 h-12 rounded-full border-2 border-white dark:border-gray-600">
+                    <div>
+                        <h4 class="font-medium dark:text-white" id="swapUserName">Sarah Johnson</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-300" id="swapUserSkills">Offers: Photography, Photo Editing</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Your Offer</label>
+                    <select class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <option>Web Development</option>
+                        <option>JavaScript Tutoring</option>
+                        <option>React Help</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Requested Skill</label>
+                    <select class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" id="requestedSkill">
+                        <option>Photography</option>
+                        <option>Photo Editing</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                    <textarea class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" rows="3" placeholder="Hi Sarah, I'd love to swap web development lessons for photography sessions!"></textarea>
+                </div>
+                <button type="submit" class="w-full px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">Send Swap Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary-600 to-blue-500 text-white">
+            <div class="max-w-4xl mx-auto text-center animate_animated animate_fadeIn">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">Trade Skills, <span class="gradient-text animate_animated animatepulse animate_infinite">Grow Together</span></h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    Connect with people who have the skills you need and offer your expertise in return.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 pt-4">
+                    <button id="findSkillsBtn" class="px-6 py-3 btn-gradient text-white rounded-full font-medium flex items-center pulse-cta">
+                        Find Skills Now <i class="fas fa-arrow-right ml-2 animate_animated animatefadeInRight animate_infinite"></i>
+                    </button>
+                    <button id="offerSkillsBtn" class="px-6 py-3 border-2 border-white text-white rounded-full font-medium hover:bg-white hover:bg-opacity-10 flex items-center">
+                        Offer Your Skills <i class="fas fa-plus ml-2"></i>
+                    </button>
+                </div>
+                <div class="mt-12 max-w-md mx-auto animate-float">
+                    <img src="https://illustrations.popsy.co/amber/student-girl.svg" 
+                         class="w-full h-auto" 
+                         alt="People exchanging skills">
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 animate_animated animate_fadeIn">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">How SkillSwap Works</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        Our platform makes it easy to exchange skills with others in your community.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition hover:-translate-y-1 skill-card animate_animated animate_fadeInUp" data-step="1">
+                        <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-primary-600 dark:text-primary-300 text-2xl font-bold">1</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center dark:text-white">Create Your Profile</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center">
+                            List the skills you can offer and what you'd like to learn in return.
+                        </p>
+                        <button class="step-action-btn mt-4 w-full px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300 rounded-md hover:bg-primary-200 dark:hover:bg-primary-800 transition">
+                            Try It Now
+                        </button>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition hover:-translate-y-1 skill-card animate_animated animatefadeInUp animate_delay-1s" data-step="2">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-purple-600 dark:text-purple-300 text-2xl font-bold">2</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center dark:text-white">Find & Connect</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center">
+                            Browse skills in your area and send swap requests to other members.
+                        </p>
+                        <button class="step-action-btn mt-4 w-full px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition">
+                            Browse Skills
+                        </button>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition hover:-translate-y-1 skill-card animate_animated animatefadeInUp animate_delay-2s" data-step="3">
+                        <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-green-600 dark:text-green-300 text-2xl font-bold">3</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-center dark:text-white">Start Swapping</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center">
+                            Arrange meetups or virtual sessions to exchange your skills.
+                        </p>
+                        <button class="step-action-btn mt-4 w-full px-4 py-2 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
+                            View Example
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Browse Section -->
+        <section id="browse" class="py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 dark:text-white animate_animated animate_fadeIn">Browse Skills</h2>
+                
+                <div class="mb-8 animate_animated animatefadeIn animate_delay-1s">
+                    <div class="relative max-w-xl mx-auto">
+                        <input type="text" id="skillSearch" placeholder="Search for skills..." 
+                               class="w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all duration-300">
+                        <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 animate_animated animatefadeIn animate_delay-1s">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="technology">Technology</button>
+                    <button class="category-btn" data-category="design">Design</button>
+                    <button class="category-btn" data-category="photography">Photography</button>
+                    <button class="category-btn" data-category="music">Music</button>
+                    <button class="category-btn" data-category="languages">Languages</button>
+                    <button class="category-btn" data-category="business">Business</button>
+                    <button class="category-btn" data-category="other">Other</button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="skillCardsContainer">
+                    <!-- User Card 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden skill-card animate_animated animate_fadeIn" data-category="photography">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" 
+                                     class="w-12 h-12 rounded-full mr-4 border-2 border-white dark:border-gray-700">
+                                <div>
+                                    <h3 class="font-semibold dark:text-white">Sarah Johnson</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Austin, TX</p>
+                                    <div class="flex items-center mt-1">
+                                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                        <span class="text-sm dark:text-gray-300">4.9 (17 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Offers:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">Photography</span>
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">Photo Editing</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Wants:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full dark:bg-purple-900 dark:text-purple-200">Web Development</span>
+                                </div>
+                            </div>
+                            <button class="request-swap-btn w-full mt-4 px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">
+                                Request Swap <i class="fas fa-exchange-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- User Card 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden skill-card animate_animated animate_fadeIn" data-category="technology" style="animation-delay: 0.2s">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                     class="w-12 h-12 rounded-full mr-4 border-2 border-white dark:border-gray-700">
+                                <div>
+                                    <h3 class="font-semibold dark:text-white">Michael Chen</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Seattle, WA</p>
+                                    <div class="flex items-center mt-1">
+                                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                        <span class="text-sm dark:text-gray-300">4.7 (23 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Offers:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">Web Development</span>
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">JavaScript</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Wants:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full dark:bg-purple-900 dark:text-purple-200">Graphic Design</span>
+                                </div>
+                            </div>
+                            <button class="request-swap-btn w-full mt-4 px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">
+                                Request Swap <i class="fas fa-exchange-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- User Card 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden skill-card animate_animated animate_fadeIn" data-category="languages" style="animation-delay: 0.4s">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" 
+                                     class="w-12 h-12 rounded-full mr-4 border-2 border-white dark:border-gray-700">
+                                <div>
+                                    <h3 class="font-semibold dark:text-white">Emma Rodriguez</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Chicago, IL</p>
+                                    <div class="flex items-center mt-1">
+                                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                        <span class="text-sm dark:text-gray-300">4.8 (12 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Offers:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">Spanish</span>
+                                    <span class="skill-tag px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full dark:bg-primary-900 dark:text-primary-200">French</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Wants:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="skill-tag px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full dark:bg-purple-900 dark:text-purple-200">Photography</span>
+                                </div>
+                            </div>
+                            <button class="request-swap-btn w-full mt-4 px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">
+                                Request Swap <i class="fas fa-exchange-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 animate_animated animate_fadeIn">
+                <div class="flex flex-col md:flex-row items-start md:items-center mb-8">
+                    <div class="relative mr-6 mb-4 md:mb-0">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                             class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-700 shadow-md">
+                        <div class="absolute bottom-0 right-0 bg-primary-500 text-white p-1 rounded-full">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold dark:text-white">John Doe</h2>
+                        <div class="flex items-center text-gray-600 dark:text-gray-300 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>San Francisco, CA</span>
+                            <span class="mx-2">•</span>
+                            <span>Member since March 2023</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center hover:scale-105 transition">
+                                <div class="text-xl font-bold dark:text-white">12</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Swaps</div>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center hover:scale-105 transition">
+                                <div class="text-xl font-bold dark:text-white">4.8</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Rating</div>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center hover:scale-105 transition">
+                                <div class="text-xl font-bold dark:text-white">5</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Skills</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold mb-4 dark:text-white">About Me</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        I'm a passionate software developer with 5+ years of experience in full-stack development. 
+                        I love sharing knowledge and learning new skills from others. When I'm not coding, you can 
+                        find me exploring photography or trying to learn Spanish!
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold dark:text-white">Skills I Offer</h3>
+                            <button id="addOfferSkillBtn" class="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+                                <i class="fas fa-plus mr-1"></i> Add Skill
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-2" id="offeredSkills">
+                            <span class="skill-tag px-3 py-1 bg-primary-100 text-primary-800 rounded-full dark:bg-primary-900 dark:text-primary-200 flex items-center">
+                                Web Development
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                            <span class="skill-tag px-3 py-1 bg-primary-100 text-primary-800 rounded-full dark:bg-primary-900 dark:text-primary-200 flex items-center">
+                                JavaScript
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                            <span class="skill-tag px-3 py-1 bg-primary-100 text-primary-800 rounded-full dark:bg-primary-900 dark:text-primary-200 flex items-center">
+                                React
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                            <span class="skill-tag px-3 py-1 bg-primary-100 text-primary-800 rounded-full dark:bg-primary-900 dark:text-primary-200 flex items-center">
+                                Node.js
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold dark:text-white">Skills I Want</h3>
+                            <button id="addWantSkillBtn" class="text-purple-600 dark:text-purple-400 hover:underline text-sm">
+                                <i class="fas fa-plus mr-1"></i> Add Skill
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-2" id="wantedSkills">
+                            <span class="skill-tag px-3 py-1 bg-purple-100 text-purple-800 rounded-full dark:bg-purple-900 dark:text-purple-200 flex items-center">
+                                Photography
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                            <span class="skill-tag px-3 py-1 bg-purple-100 text-purple-800 rounded-full dark:bg-purple-900 dark:text-purple-200 flex items-center">
+                                Spanish
+                                <button class="remove-skill-btn ml-2 text-xs opacity-70 hover:opacity-100">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden animate_animated animate_fadeIn">
+                <div class="px-6 py-4 border-b dark:border-gray-700 flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold dark:text-white">Admin Dashboard</h2>
+                    <button id="refreshAdminBtn" class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                        <i class="fas fa-sync-alt mr-1"></i> Refresh
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg hover:scale-[1.02] transition">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-blue-200">Total Users</h3>
+                                <i class="fas fa-users text-blue-100 dark:text-blue-200"></i>
+                            </div>
+                            <div class="text-2xl font-bold dark:text-white">2,847</div>
+                            <div class="text-xs text-green-600 dark:text-green-400 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i> 12.5% from last week
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg hover:scale-[1.02] transition">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-purple-200">Active Swaps</h3>
+                                <i class="fas fa-exchange-alt text-purple-100 dark:text-purple-200"></i>
+                            </div>
+                            <div class="text-2xl font-bold dark:text-white">156</div>
+                        </div>
+                        <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg hover:scale-[1.02] transition">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-red-200">Pending Reports</h3>
+                                <i class="fas fa-flag text-red-100 dark:text-red-200"></i>
+                            </div>
+                            <div class="text-2xl font-bold dark:text-white">8</div>
+                            <div class="text-xs text-red-600 dark:text-red-400 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i> 3 new today
+                            </div>
+                        </div>
+                        <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg hover:scale-[1.02] transition">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-green-200">Completed</h3>
+                                <i class="fas fa-check-circle text-green-100 dark:text-green-200"></i>
+                            </div>
+                            <div class="text-2xl font-bold dark:text-white">892</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-4 dark:text-white">Recent Activity</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Activity</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" 
+                                                 class="w-8 h-8 rounded-full mr-3">
+                                            <div>
+                                                <div class="font-medium dark:text-white">Sarah Johnson</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">sarah@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">
+                                        Created swap request
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        2 hours ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="admin-action-btn text-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100 mr-3">View</button>
+                                        <button class="admin-action-btn text-red-600 hover:text-red-900 dark:text-red-300 dark:hover:text-red-100">Flag</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                                 class="w-8 h-8 rounded-full mr-3">
+                                            <div>
+                                                <div class="font-medium dark:text-white">Michael Chen</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">michael@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">
+                                        Completed profile
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        5 hours ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="admin-action-btn text-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100 mr-3">View</button>
+                                        <button class="admin-action-btn text-red-600 hover:text-red-900 dark:text-red-300 dark:hover:text-red-100">Flag</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/68.jpg" 
+                                                 class="w-8 h-8 rounded-full mr-3">
+                                            <div>
+                                                <div class="font-medium dark:text-white">Emma Rodriguez</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">emma@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">
+                                        Reported content
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        1 day ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="admin-action-btn text-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100 mr-3">View</button>
+                                        <button class="admin-action-btn text-red-600 hover:text-red-900 dark:text-red-300 dark:hover:text-red-100">Flag</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 px-4 sm:px-6 lg:px-8 animate_animated animate_fadeIn">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-exchange-alt mr-2"></i>
+                    SkillSwap Pro
+                </h3>
+                <p class="text-gray-400">
+                    Connecting people through knowledge exchange since 2023.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Navigation</h4>
+                <ul class="space-y-2">
+                    <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
+                    <li><a href="#browse" class="text-gray-400 hover:text-white transition">Browse Skills</a></li>
+                    <li><a href="#profile" class="text-gray-400 hover:text-white transition">Profile</a></li>
+                    <li><a href="#admin" class="text-gray-400 hover:text-white transition">Admin</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition">Terms</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition">Guidelines</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Connect</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition transform hover:-translate-y-1">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-400 transition transform hover:-translate-y-1">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition transform hover:-translate-y-1">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-8 mt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+            © 2023 SkillSwap Pro. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Add Skill Modal -->
+    <div id="addSkillModal" class="modal">
+        <div class="modal-content dark:bg-gray-800 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold dark:text-white" id="addSkillModalTitle">Add New Skill</h3>
+                <button id="closeAddSkillModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white text-2xl">
+                    &times;
+                </button>
+            </div>
+            <form id="addSkillForm" class="space-y-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Skill Type</label>
+                    <div class="flex space-x-4">
+                        <button type="button" id="offerSkillType" class="flex-1 px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded-md font-medium">
+                            I Offer
+                        </button>
+                        <button type="button" id="wantSkillType" class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md font-medium">
+                            I Want
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="newSkillName">Skill Name</label>
+                    <input type="text" id="newSkillName" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="e.g. Photography, JavaScript" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="skillCategory">Category</label>
+                    <select id="skillCategory" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <option>Technology</option>
+                        <option>Design</option>
+                        <option>Photography</option>
+                        <option>Music</option>
+                        <option>Languages</option>
+                        <option>Business</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="skillLevel">Your Level</label>
+                    <select id="skillLevel" class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                        <option>Expert</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full px-4 py-2 btn-gradient text-white rounded-md hover:opacity-90 transition">Add Skill</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        });
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Modal functionality
+        const modals = {
+            login: document.getElementById('loginModal'),
+            register: document.getElementById('registerModal'),
+            swap: document.getElementById('swapModal'),
+            addSkill: document.getElementById('addSkillModal')
+        };
+
+        // Show modals
+        document.getElementById('loginBtn').addEventListener('click', () => showModal('login'));
+        document.getElementById('registerBtn').addEventListener('click', () => showModal('register'));
+        document.getElementById('switchToRegister').addEventListener('click', () => {
+            hideModal('login');
+            showModal('register');
+        });
+        document.getElementById('switchToLogin').addEventListener('click', () => {
+            hideModal('register');
+            showModal('login');
+        });
+
+        // Close modals
+        document.getElementById('closeLoginModal').addEventListener('click', () => hideModal('login'));
+        document.getElementById('closeRegisterModal').addEventListener('click', () => hideModal('register'));
+        document.getElementById('closeSwapModal').addEventListener('click', () => hideModal('swap'));
+        document.getElementById('closeAddSkillModal').addEventListener('click', () => hideModal('addSkill'));
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                Object.keys(modals).forEach(key => {
+                    if (modals[key].style.display === 'flex') {
+                        hideModal(key);
+                    }
+                });
+            }
+        });
+
+        function showModal(modalName) {
+            modals[modalName].style.display = 'flex';
+            setTimeout(() => {
+                modals[modalName].classList.add('active');
+            }, 10);
+        }
+
+        function hideModal(modalName) {
+            modals[modalName].classList.remove('active');
+            setTimeout(() => {
+                modals[modalName].style.display = 'none';
+            }, 300);
+        }
+
+        // Form submissions
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            alert('Login functionality would connect to your authentication system.\n\nDemo: Logged in as ' + email);
+            hideModal('login');
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            alert('Account created for ' + name + '!\n\nDemo: Registration would be processed by your backend.');
+            hideModal('register');
+        });
+
+        // Hero section buttons
+        document.getElementById('findSkillsBtn').addEventListener('click', () => {
+            document.querySelector('#browse').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('offerSkillsBtn').addEventListener('click', () => {
+            showModal('addSkill');
+            document.getElementById('offerSkillType').classList.add('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('wantSkillType').classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('wantSkillType').classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-200');
+            document.getElementById('addSkillModalTitle').textContent = 'Add Skill You Offer';
+        });
+
+        // Skill swap requests
+        document.querySelectorAll('.request-swap-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.bg-white, .dark\\:bg-gray-800');
+                const userName = card.querySelector('h3').textContent;
+                const userAvatar = card.querySelector('img').src;
+                const offeredSkills = Array.from(card.querySelectorAll('.skill-tag.bg-primary-100, .skill-tag.dark\\:bg-primary-900')).map(skill => skill.textContent.trim()).join(', ');
+                
+                document.getElementById('swapUserName').textContent = userName;
+                document.getElementById('swapUserAvatar').src = userAvatar;
+                document.getElementById('swapUserSkills').textContent = 'Offers: ' + offeredSkills;
+                
+                showModal('swap');
+            });
+        });
+
+        // Swap form submission
+        document.getElementById('swapForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userName = document.getElementById('swapUserName').textContent;
+            const skill = document.getElementById('requestedSkill').value;
+            hideModal('swap');
+            alert(Swap request sent to ${userName} for ${skill}!\n\nIn a full implementation, this would:\n1. Notify the user\n2. Create a database record\n3. Enable messaging between users);
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                if (category === 'all') {
+                    document.querySelectorAll('.skill-card').forEach(card => {
+                        card.style.display = 'block';
+                    });
+                } else {
+                    document.querySelectorAll('.skill-card').forEach(card => {
+                        if (card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Skill management
+        document.getElementById('addOfferSkillBtn').addEventListener('click', () => {
+            showModal('addSkill');
+            document.getElementById('offerSkillType').classList.add('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('wantSkillType').classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('wantSkillType').classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-200');
+            document.getElementById('addSkillModalTitle').textContent = 'Add Skill You Offer';
+        });
+
+        document.getElementById('addWantSkillBtn').addEventListener('click', () => {
+            showModal('addSkill');
+            document.getElementById('wantSkillType').classList.add('bg-purple-100', 'dark:bg-purple-900', 'text-purple-800', 'dark:text-purple-200');
+            document.getElementById('offerSkillType').classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('offerSkillType').classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-200');
+            document.getElementById('addSkillModalTitle').textContent = 'Add Skill You Want';
+        });
+
+        document.getElementById('offerSkillType').addEventListener('click', function() {
+            this.classList.add('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('wantSkillType').classList.remove('bg-purple-100', 'dark:bg-purple-900', 'text-purple-800', 'dark:text-purple-200');
+            document.getElementById('wantSkillType').classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-200');
+            document.getElementById('addSkillModalTitle').textContent = 'Add Skill You Offer';
+        });
+
+        document.getElementById('wantSkillType').addEventListener('click', function() {
+            this.classList.add('bg-purple-100', 'dark:bg-purple-900', 'text-purple-800', 'dark:text-purple-200');
+            document.getElementById('offerSkillType').classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-800', 'dark:text-primary-200');
+            document.getElementById('offerSkillType').classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-200');
+            document.getElementById('addSkillModalTitle').textContent = 'Add Skill You Want';
+        });
+
+        document.
